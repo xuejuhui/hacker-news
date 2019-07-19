@@ -1,24 +1,27 @@
 import React, { useState, useEffect, Fragment } from "react";
-// import axios from "axios";
 import Story from "./Story.jsx";
-import apiCall from "../../apiCall";
+import { getCancelableTopStories } from "../../apiCall";
 
 const Stories = () => {
   const [stories, setstories] = useState([]);
   const [offset, setoffset] = useState(0);
+  const getTopStories = getCancelableTopStories(offset);
   useEffect(() => {
-    apiCall.getTopStories().then(res =>
-      apiCall.getStoriesByLimit(res.data, offset).then(res => {
-        setstories(res.map(data => data.data));
-      })
-    );
+    getTopStories.promise
+      .then(res => setstories(res))
+      .catch(err => console.log(err));
   }, []);
+
   useEffect(() => {
-    apiCall.getTopStories().then(res =>
-      apiCall.getStoriesByLimit(res.data, offset).then(res => {
-        setstories(res.map(data => data.data));
-      })
-    );
+    return () => {
+      getTopStories.cancel();
+    };
+  }, []);
+
+  useEffect(() => {
+    getTopStories.promise
+      .then(res => setstories(res))
+      .catch(err => console.log(err));
   }, [offset]);
 
   return (

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { makeCancelable } from "./utils";
 const BASE_URL = "https://hacker-news.firebaseio.com/v0/";
 const JSON_PRETTY = ".json?print=pretty";
 
@@ -11,14 +12,14 @@ const getStoriesLimit = (limit, offset, stories) => {
   return stories.slice(offset, offset + limit);
 };
 
-const getTopStories = () => {
+let getTopStories = () => {
   return axios.get(`${BASE_URL}topstories${JSON_PRETTY}`);
 };
-const getStroyById = id => {
+let getStroyById = id => {
   return axios.get(`${BASE_URL}item/${id}${JSON_PRETTY}`);
 };
 
-const getStoriesByLimit = (wholeIds, offset) => {
+let getStoriesByLimit = (wholeIds, offset) => {
   const ids = getStoriesLimit(pageLimit, offset, wholeIds);
   const storiesPromise = ids.map(id => {
     return getStroyById(id);
@@ -26,10 +27,14 @@ const getStoriesByLimit = (wholeIds, offset) => {
   return Promise.all(storiesPromise);
 };
 
-const apiCall = {
-  getStoriesByLimit,
-  getStroyById,
-  getTopStories
+const getCancelableTopStories = (offset = 0) => {
+  return makeCancelable(
+    getTopStories().then(res => {
+      return getStoriesByLimit(res.data, offset).then(res => {
+        return res.map(data => data.data);
+      });
+    })
+  );
 };
 
-export default apiCall;
+export { getStroyById, getCancelableTopStories };

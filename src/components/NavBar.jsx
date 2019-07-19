@@ -1,34 +1,44 @@
 import React, { useState } from "react";
 import { Menu } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
-const Story = props => {
+const NavBar = props => {
   const [activeItem, setActiveItem] = useState("news");
+  const handleItemClick = e => {
+    setActiveItem(e.target.text);
+  };
   return (
     <Menu>
       <Menu.Item
+        as={Link}
+        to="/stories"
         name="news"
         active={activeItem === "news"}
-        onClick={this.handleItemClick}
+        onClick={handleItemClick}
       >
         news
       </Menu.Item>
 
       <Menu.Item
+        as={Link}
+        to="/"
         name="best"
         active={activeItem === "best"}
-        onClick={this.handleItemClick}
+        onClick={handleItemClick}
       >
         best
       </Menu.Item>
 
       <Menu.Item
+        as={Link}
+        to="/stories"
         name="ask"
         active={activeItem === "ask"}
-        onClick={this.handleItemClick}
+        onClick={handleItemClick}
       >
         ask
       </Menu.Item>
     </Menu>
   );
 };
-export default Story;
+export default NavBar;
