@@ -1,11 +1,10 @@
 import React, { useState, useEffect, Fragment } from "react";
 import Story from "./Story.jsx";
-import { getCancelableTopStories } from "../../apiCall";
 
-const Stories = () => {
+const Stories = ({ storiesType }) => {
   const [stories, setstories] = useState([]);
   const [offset, setoffset] = useState(0);
-  const getTopStories = getCancelableTopStories(offset);
+  const getTopStories = storiesType(offset);
   useEffect(() => {
     getTopStories.promise
       .then(res => setstories(res))
