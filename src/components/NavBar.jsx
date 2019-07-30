@@ -31,12 +31,30 @@ const NavBar = props => {
 
       <Menu.Item
         as={Link}
-        to="/stories"
+        to="/ask"
         name="ask"
         active={activeItem === "ask"}
         onClick={handleItemClick}
       >
         ask
+      </Menu.Item>
+      <Menu.Item
+        as={Link}
+        to="/show"
+        name="show"
+        active={activeItem === "show"}
+        onClick={handleItemClick}
+      >
+        show
+      </Menu.Item>
+      <Menu.Item
+        as={Link}
+        to="/job"
+        name="job"
+        active={activeItem === "job"}
+        onClick={handleItemClick}
+      >
+        job
       </Menu.Item>
     </Menu>
   );

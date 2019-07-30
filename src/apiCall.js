@@ -21,8 +21,20 @@ let getStroyById = id => {
 const getNewStories = () => {
   return axios.get(`${BASE_URL}newstories${JSON_PRETTY}`);
 };
+const getAskStories = () => {
+  return axios.get(`${BASE_URL}askstories${JSON_PRETTY}`);
+};
+const getShowStories = () => {
+  return axios.get(`${BASE_URL}showstories${JSON_PRETTY}`);
+};
+const getJobStories = () => {
+  return axios.get(`${BASE_URL}jobstories${JSON_PRETTY}`);
+};
 
-let getStoriesByLimit = (wholeIds, offset) => {
+const getStory = id => {
+  return getStroyById(id).then(res => res.data);
+};
+const getStoriesByLimit = (wholeIds, offset) => {
   const ids = getStoriesLimit(pageLimit, offset, wholeIds);
   const storiesPromise = ids.map(id => {
     return getStroyById(id);
@@ -50,4 +62,40 @@ const getCancelableNewStories = (offset = 0) => {
   );
 };
 
-export { getStroyById, getCancelableTopStories, getCancelableNewStories };
+const getCancelableAskStories = (offset = 0) => {
+  return makeCancelable(
+    getAskStories().then(res => {
+      return getStoriesByLimit(res.data, offset).then(res => {
+        return res.map(data => data.data);
+      });
+    })
+  );
+};
+const getCancelableShowStories = (offset = 0) => {
+  return makeCancelable(
+    getShowStories().then(res => {
+      return getStoriesByLimit(res.data, offset).then(res => {
+        return res.map(data => data.data);
+      });
+    })
+  );
+};
+const getCancelableJobStories = (offset = 0) => {
+  return makeCancelable(
+    getJobStories().then(res => {
+      return getStoriesByLimit(res.data, offset).then(res => {
+        return res.map(data => data.data);
+      });
+    })
+  );
+};
+
+export {
+  getStroyById,
+  getCancelableTopStories,
+  getCancelableNewStories,
+  getCancelableAskStories,
+  getCancelableShowStories,
+  getCancelableJobStories,
+  getStory
+};

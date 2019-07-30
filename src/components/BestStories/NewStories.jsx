@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { Fragment } from "react";
 import Stories from "./Stories.jsx";
 import { getCancelableNewStories } from "../../apiCall";
 const NewStories = () => {

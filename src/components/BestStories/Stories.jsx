@@ -22,7 +22,6 @@ const Stories = ({ storiesType }) => {
       .then(res => setstories(res))
       .catch(err => console.log(err));
   }, [offset]);
-
   return (
     <Fragment>
       {stories.map(story => {
